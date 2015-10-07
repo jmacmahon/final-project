@@ -1,0 +1,44 @@
+\documentclass{article}
+
+\usepackage{default}
+
+\title{Project Description, COM3500}
+\author{Joe MacMahon, supervised by Mike Stannett}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\subsection{Background}
+\subsubsection{BitTorrent}
+BitTorrent is a protocol used for peer-to-peer data distribution (file sharing) across the Internet.  It was designed in 2001 by Bram Cohen and has been in widespread use for over a decade for a number of purposes.  Its central feature is the ability to distribute large files to many users without producing excessive load or bandwidth requirements on a central server.
+
+When a user wants to download a file using BitTorrent, they first acquire a ``.torrent'' file, which contains some metadata: hashes, filenames and the address of a server known as a ``tracker''.  The user then contacts the tracker to announce themself, and the tracker returns a collection of addresses of other users.  The user then connects directly to these other users and downloads the data in chunks from them.
+
+% TODO:
+% - Ratio?
+% - DHT
+
+\subsubsection{Bitcoin}
+Bitcoin is a fully peer-to-peer online currency, developed in 2009 by Satoshi Nakamoto.  It uses public-private key cryptography to secure an electronic `wallet' and sign transactions of Bitcoins to other users.  There are many interesting aspects of how Bitcoin works (e.g. Bitcoin generation or `mining', macroeconomic behaviour, ethical implications of unregulated capitalism), but we will be focussing on the mechanism by which transactions are made and verified by the network.
+
+% TODO:
+% - detail about transactions?
+
+\subsection{Project}
+% - clear description
+% - why is this useful?
+% - scope outline
+% - citations
+
+\section{Analysis}
+% - problems (blockchain, scale, implementation)
+% - techniques
+% - tools
+
+\section{Plan of action}
+% - road map
+% - weekly plan
+
+\end{document}
