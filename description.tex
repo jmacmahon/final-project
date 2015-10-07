@@ -14,7 +14,7 @@
 \subsubsection{BitTorrent}
 BitTorrent is a protocol used for peer-to-peer data distribution (file sharing) across the Internet.  It was designed in 2001 by Bram Cohen and has been in widespread use for over a decade for a number of purposes.  Its central feature is the ability to distribute large files to many users without producing excessive load or bandwidth requirements on a central server.
 
-When a user wants to download a file using BitTorrent, they first acquire a ``.torrent'' file, which contains some metadata: hashes, filenames and the address of a server known as a ``tracker''.  The user then contacts the tracker to announce themself, and the tracker returns a collection of addresses of other users.  The user then connects directly to these other users and downloads the data in chunks from them.
+When a user wants to download a file using BitTorrent, they first acquire a ``.torrent'' file, which contains some metadata: hashes, filenames and the address of a server known as a ``tracker''.  The user then contacts the tracker to announce themself, and the tracker returns a collection of addresses of other users.  The user then connects directly to these other users and downloads the data in chunks from them.  During this process (and for some time after it has finished), the user will also receive requests from other users for chunks of data that they have already downloaded
 
 % TODO:
 % - Ratio?
@@ -26,10 +26,26 @@ Bitcoin is a fully peer-to-peer online currency, developed in 2009 by Satoshi Na
 % TODO:
 % - detail about transactions?
 
+\subsubsection{Ratio}
+TODO:
+- useful to know a user's ratio, kicking them out of the swarm or penalising bad behaviour
+- usually implemented on tracker side with reporting
+- DHT gives swarms resilience at the cost of ratio tracking
+
 \subsection{Project}
-% - clear description
 % - why is this useful?
 % - scope outline
+
+The project is to develop an application to keep track of users' uploaded/downloaded ratios in a particular torrent swarm, without the use of a central tracker.  To do this, we would use and adapt the transaction technology from Bitcoin to BitTorrent's purposes, i.e. tracking the sharing of chunks between peers in the swarm.
+
+The primary aims of the project are (in order of expected completion):
+\begin{enumerate}
+\item A formal protocol specification and testing for correctness
+\item Testing and optimisation for working at scale
+\item A basic reference implementation in a common language (e.g. Python)
+\item A fully usable implementation as a local ``proxy'' tracker, or alternatibely as a plugin to an existing BitTorrent client.
+\end{enumerate}
+
 % - citations
 
 \section{Analysis}
