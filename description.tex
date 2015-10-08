@@ -40,7 +40,7 @@ The primary aims of the project are (in order of expected completion):
 \item A formal protocol specification and testing for correctness
 \item Testing and optimisation for working at scale
 \item A basic reference implementation in a common language (e.g. Python)
-\item A fully usable implementation as a local ``proxy'' tracker, or alternatibely as a plugin to an existing BitTorrent client.
+\item A fully usable implementation as a local ``proxy'' tracker, or alternatively as a plugin to an existing BitTorrent client.
 \end{enumerate}
 
 \section{Analysis}
@@ -49,11 +49,9 @@ The problems facing the project can be divided into those we can anticipate, and
 \subsection{Known unknowns}
 
 \subsubsection{Blockchain storage}
-In Bitcoin, every peer has to store the entire blockchain (transaction history of the network) locally, and at the time of writing, this comes to almost 45 GiB.  Obviously this is very unwieldy and storing a blockchain of this size for each torrent would be totally infeasible (with current storage capacities).
+In Bitcoin, every peer has to store the entire blockchain (transaction history of the network) locally, and at the time of writing, this comes to almost 45 GiB\footnote{The current and historical size can be checked at \url{https://blockchain.info/charts/blocks-size}.}.  Obviously this is very unwieldy and storing a blockchain of this size for each torrent would be totally infeasible (with current storage capacities).
 
-It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than time $T$ and discarding the detailed data,
-
-% TODO another potential solution?
+It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than time $T$ and discarding the detailed data, simply discarding old data without summing and signing, or finding a suitable compression algorithm for the data.
 
 \subsubsection{Scaling}
 The nature of peer-to-peer systems requires their protocols to work at large scales.  It is not uncommmon for a BitTorrent swarm to contain upwards of 1000 peers, and ideally the protocols will scale upwards of that to be as future-proof as possible.
@@ -78,15 +76,52 @@ There are a number of potential solutions, with advantages and drawbacks.  These
 A good preperation and knowledge of the subject area can prevent a lot of unforseen problems (or at least, allow us to forsee them), and therefore a comprehensive Survey and Analysis phase should provide some protection against future setbacks.  I intend to read specifications of the original BitTorrent, Bitcoin and DHT protocols, as well as some subsequent analysis or case studies of how they work.  Since BitTorrent is used significantly by the Free and Open-Source Software community, I also intend to talk to some developers of BitTorrent and Bitcoin clients to understand their experiences and benefit from any advice they have for the project.
 
 \section{Plan of action}
-% - road map
-% - weekly plan
+\subsection{General road map}
+\begin{enumerate}
+\item Review of literature and expertise
+\item Familiarisation with tools and technologies
+\item In-depth specification, with incremental stages
+\item Development of protocol
+\item Optimisation for scale
+\item Reference implementation
+\end{enumerate}
+
+\subsection{Weekly work plan}
+The University guidelines say that each credit for a module should equate to more-or-less 10 hours' work over its course.  Since COM3500 is worth 30 credits, this works out at 15 credits per 12-week semester, i.e. 12h30 of work per week.  I have allocated 13h30 per week in my timetable, so as to leave some flexibility.
+
+My general plan until the end of Week 11 is as follows:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{l l}
+\textbf{End of week} & Target \\ \hline
+Week 2               & Finish Project Description \\
+Week 3               & Begin collecting and reading literature \\
+Week 4               & Investigate simulation tools (reading ongoing) \\
+Week 5               & Investigate DHT networks (reading ongoing) \\
+Week 6               & Investigate blockchain storage and authentication (reading ongoing) \\
+Week 7               & Overspill week (and SoMaS reading week) \\
+Week 8               & General outline of Survey and Analysis report \\
+Week 9               & Continued work on report \\
+Week 10              & Finish first draft of report \\
+Week 11              & Corrections and improvements to report, work plan for Semester 2 \\
+  \end{tabular}
+  \caption{Weekly work plan}
+\end{table}
+
+In my opinion, it wouldn't be realistic to plan a timetable for beyond Week 11 at this stage, since the content of the work to be done varies so much on the outcome of the Survey and Analysis stage.  A further work plan for Week 12 and Semester 2 will be written at the end of Week 11.
 
 \section{Citations}
-% - BitTorrent paper
-% - Bitcoin paper
-% - Blockchain size
-% - PeerSim
-% - RealPeer
-% - Panopticlick
+Bram Cohen, 2008.  \emph{The BitTorrent Protocol Specification} [online] Available at <\url{http://www.bittorrent.org/beps/bep_0003.html}>.  [Accessed 08 October 2015.]
+
+Peter Eckersley, 2010.  \emph{How Unique Is Your Web Browser?} In: Electronic Frontier Foundation (EFF), \emph{Proceedings of the Privacy Enhancing Technologies Symposium (PETS 2010), Springer Lecture Notes in Computer Science} [online] Available at <\url{https://panopticlick.eff.org/browser-uniqueness.pdf}>.  [Accessed 08 October 2015.]
+
+Dieter Hildebrandt, 2006.  \emph{RealPeer - A Framework for the Simulation-based Development of Peer-to-Peer Systems} [online] Available at <\url{http://sourceforge.net/projects/realpeer/}>.  [Accessed 08 October 2015.]
+
+Márk Jelasity, Alberto Montresor, Gian Paolo Jesi, Spyros Voulgaris, 2013.  \emph{PeerSim: A Peer-to-Peer Simulator} [online] Available at <\url{http://peersim.sourceforge.net/}>.  [Accessed 08 October 2015.]
+
+Andrew Loewenstern, Arvid Norberg, 2008.  \emph{DHT Protocol} [online] Available at <\url{http://www.bittorrent.org/beps/bep_0005.html}>.  [Accessed 08 October 2015.]
+
+Satoshi Nakomoto, 2008.  \emph{Bitcoin: A Peer-to-Peer Electronic Cash System} [online] Available at <\url{https://bitcoin.org/bitcoin.pdf}>.  [Accessed 08 October 2015.]
 
 \end{document}
