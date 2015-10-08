@@ -43,20 +43,19 @@ The primary aims of the project are (in order of expected completion):
 \item A fully usable implementation as a local ``proxy'' tracker, or alternatibely as a plugin to an existing BitTorrent client.
 \end{enumerate}
 
-% - citations
-
 \section{Analysis}
-% TODO expand preliminary paragraph here
-Some anticipated hurdles or problems to solve:
+The problems facing the project can be divided into those we can anticipate, and those we can't.  This section will discuss some anticipated problems, and then comment on how to minimise the number and impact of unanticipated problems.
 
-\subsection{Blockchain storage}
+\subsection{Known unknowns}
+
+\subsubsection{Blockchain storage}
 In Bitcoin, every peer has to store the entire blockchain (transaction history of the network) locally, and at the time of writing, this comes to almost 45 GiB.  Obviously this is very unwieldy and storing a blockchain of this size for each torrent would be totally infeasible (with current storage capacities).
 
-It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than time \mathbb{T} and discarding the detailed data,
+It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than time $T$ and discarding the detailed data,
 
 % TODO another potential solution?
 
-\subsection{Scaling}
+\subsubsection{Scaling}
 The nature of peer-to-peer systems requires their protocols to work at large scales.  It is not uncommmon for a BitTorrent swarm to contain upwards of 1000 peers, and ideally the protocols will scale upwards of that to be as future-proof as possible.
 
 Given that the development will largely be done on a single system, it will be necessary to perform rigorous testing with peer-to-peer simulation software.  An in-depth assessment of various simulation software will be part of the Survey and Analysis stage, however some preliminary options would be PeerSim or RealPeer.
@@ -64,12 +63,19 @@ Given that the development will largely be done on a single system, it will be n
 Some mathematical analysis using principles from concurrent computing and distributed systems would also complement the simulation testing.
 
 \subsubsection{Authentication}
+As with any system which tracks individual users, the question of authentication has to be addressed: what stops a user simply restarting their client with a new ID and resetting their tracked ratio to 0:0?  This is not a problem within the scope of Bitcoin (since it is perfectly acceptable for a Bitcoin user to have multiple wallets), so we will have to find a solution ourselves.
 
+There are a number of potential solutions, with advantages and drawbacks.  These will be expanded on in the Survey and Analysis stage, but in brief they include:
+\begin{itemize}
+\item Track clients by both IP and an ID string.
+\item `Fingerprint' clients with identifying info e.g. ping, client ID, similar to Panopticlick.
+\item Sign IDs with a private key (owned by the torrent creator) and have only transactions between signed IDs permissible.
+\end{itemize}
 
 \subsubsection{Implementation}
-% - problems (blockchain, scale, implementation, authentication)
-% - techniques
-% - tools
+
+\subsection{Unknown unknowns}
+A good preperation and knowledge of the subject area can prevent a lot of unforseen problems (or at least, allow us to forsee them), and therefore a comprehensive Survey and Analysis phase should provide some protection against future setbacks.  I intend to read specifications of the original BitTorrent, Bitcoin and DHT protocols, as well as some subsequent analysis or case studies of how they work.  Since BitTorrent is used significantly by the Free and Open-Source Software community, I also intend to talk to some developers of BitTorrent and Bitcoin clients to understand their experiences and benefit from any advice they have for the project.
 
 \section{Plan of action}
 % - road map
@@ -81,5 +87,6 @@ Some mathematical analysis using principles from concurrent computing and distri
 % - Blockchain size
 % - PeerSim
 % - RealPeer
+% - Panopticlick
 
 \end{document}
