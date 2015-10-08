@@ -14,12 +14,12 @@
 \subsubsection{BitTorrent}
 BitTorrent is a protocol used for peer-to-peer data distribution (file sharing) across the Internet.  It was designed in 2001 by Bram Cohen and has been in widespread use for over a decade for a number of purposes.  Its central feature is the ability to distribute large files to many users without producing excessive load or bandwidth requirements on a central server.
 
-When a user wants to download a file using BitTorrent, they first acquire a ``.torrent'' file, which contains some metadata: hashes, filenames and the address of a server known as a ``tracker''.  The user then contacts the tracker to announce themself, and the tracker returns a collection of addresses of other users.  The user then connects directly to these other users and downloads the data in chunks from them.  During this process (and for some time after it has finished), the user will also receive requests from other users for chunks of data that they have already downloaded
+When a user wants to download a file using BitTorrent, they first acquire a ``.torrent'' file, which contains some metadata: hashes, filenames and the address of a server known as a ``tracker''.  The user then contacts the tracker to announce themself, and the tracker returns a collection of addresses of other users, from a list of peers that it maintains internally.  Then the user will connect directly to these other users and downloads the data in chunks from them.  During this process (and for some time after it has finished), the user will also receive requests from other users for chunks of data that they have already downloaded.
 
 More recently, it has become possible to use BitTorrent without a central tracker at all, through the use of a distributed hash table (DHT) to manage the peer lists.  This is useful for tolerance of failure (since the central tracker is a single point of failure in the classical system) and for keeping down maintenance costs of servers.  Historically, there have been two major (incompatible) DHT systems on top of BitTorrent, but the one in mainstream use today is known as Mainline DHT, developed by Andrew Loewenstern and Arvid Norberg.
 
 \subsubsection{Ratio}
-Currently, it is useful for some trackers to track a peer's uploaded/downloaded ratio for a particular torrent.  This information can be used to make sure all peers are ``well-behaved'' and contributing as much to the swarm as they are taking away.  (Users who are not well-behaved are sometimes known as ``leechers''.)  Ratio tracking is usually implemented on the tracker, as part of whatever software manages the announces and peer lists.
+Currently, it is useful for some trackers to track a peer's uploaded/downloaded ratio for a particular torrent.  This information can be used to make sure all peers are ``well-behaved'', i.e. contributing as much to the swarm as they are taking away.  (Users who are not well-behaved are sometimes known as ``leechers''.)  Ratio tracking is usually implemented on the tracker, as part of the tracking software which manages the peer lists.
 
 On the one hand, we have the resilience and fault-tolerance offered by DHT --- but no ratio tracking, and on the other, we have the ability to enforce fair play offered by ratio tracking --- but with the need for a central tracker.  The project will aim to unite these two systems by providing ratio tracking on DHT torrents, by repurposing distributed transaction technology from Bitcoin.
 
@@ -31,7 +31,7 @@ Bitcoin is a fully peer-to-peer online currency, developed in 2009 by Satoshi Na
 \subsection{Project}
 % - scope outline
 
-The project is to develop and implement a protocol to keep track of users' uploaded/downloaded ratios in a particular torrent swarm, without the use of a central tracker.  To do this, we would use and adapt the transaction technology from Bitcoin to BitTorrent's purposes, i.e. tracking the sharing of chunks between peers in the swarm.
+The project is to develop and implement a protocol to keep track of users' uploaded/downloaded ratios in a particular torrent swarm, without the use of a central tracker.  To do this, we would use and adapt the transaction technology from Bitcoin to BitTorrent's purposes, i.e. rather than tracking transactions of a virtual currency, we will be tracking the sharing of chunks between peers in the swarm.
 
 % TODO talk about implementation here?
 
@@ -49,9 +49,9 @@ The problems facing the project can be divided into those we can anticipate, and
 \subsection{Known unknowns}
 
 \subsubsection{Blockchain storage}
-In Bitcoin, every peer has to store the entire blockchain (transaction history of the network) locally, and at the time of writing, this comes to almost 45 GiB\footnote{The current and historical size can be checked at \url{https://blockchain.info/charts/blocks-size}.}.  Obviously this is very unwieldy and storing a blockchain of this size for each torrent would be totally infeasible (with current storage capacities).
+In Bitcoin, every peer has to store the entire blockchain (transaction history of the network) locally, and at the time of writing, this comes to almost 45 GiB\footnote{The current and historical blockchain size can be checked at \url{https://blockchain.info/charts/blocks-size}.}.  Obviously this is very unwieldy and storing a blockchain of this size for each torrent would be totally infeasible (with current storage capacities).
 
-It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than time $T$ and discarding the detailed data, simply discarding old data without summing and signing, or finding a suitable compression algorithm for the data.
+It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than some relative time $T$ and discarding the detailed data, simply discarding old data without summing and signing, or finding a suitable compression algorithm for the data.
 
 \subsubsection{Scaling}
 The nature of peer-to-peer systems requires their protocols to work at large scales.  It is not uncommmon for a BitTorrent swarm to contain upwards of 1000 peers, and ideally the protocols will scale upwards of that to be as future-proof as possible.
@@ -61,16 +61,14 @@ Given that the development will largely be done on a single system, it will be n
 Some mathematical analysis using principles from concurrent computing and distributed systems would also complement the simulation testing.
 
 \subsubsection{Authentication}
-As with any system which tracks individual users, the question of authentication has to be addressed: what stops a user simply restarting their client with a new ID and resetting their tracked ratio to 0:0?  This is not a problem within the scope of Bitcoin (since it is perfectly acceptable for a Bitcoin user to have multiple wallets), so we will have to find a solution ourselves.
+As with any system which tracks individual users, the question of authentication has to be addressed: what stops a user simply restarting their client with a new ID and resetting their tracked ratio to 0:0?  This is not a problem within the scope of Bitcoin (since it is perfectly acceptable for a Bitcoin user to have multiple wallets with different balances), so we will have to find a solution ourselves.
 
 There are a number of potential solutions, with advantages and drawbacks.  These will be expanded on in the Survey and Analysis stage, but in brief they include:
 \begin{itemize*}
-\item Track clients by both IP and an ID string.
-\item `Fingerprint' clients with identifying info e.g. ping, client ID, similar to Panopticlick.
-\item Sign IDs with a private key (owned by the torrent creator) and have only transactions between signed IDs permissible.
+\item Tracking clients by both IP and an ID string.
+\item `Fingerprinting' clients with identifying info e.g. ping, client ID, similar to Panopticlick\footnote{See Eckersley, 2010}.
+\item Signing IDs with a private key (owned by the torrent creator) and having only transactions between signed IDs permissible.
 \end{itemize*}
-
-\subsubsection{Implementation}
 
 \subsection{Unknown unknowns}
 A good preperation and knowledge of the subject area can prevent a lot of unforseen problems (or at least, allow us to forsee them), and therefore a comprehensive Survey and Analysis phase should provide some protection against future setbacks.  I intend to read specifications of the original BitTorrent, Bitcoin and DHT protocols, as well as some subsequent analysis or case studies of how they work.  Since BitTorrent is used significantly by the Free and Open-Source Software community, I also intend to talk to some developers of BitTorrent and Bitcoin clients to understand their experiences and benefit from any advice they have for the project.
@@ -95,15 +93,15 @@ My general plan until the end of Week 11 is as follows:
   \centering
   \begin{tabular}{l l}
 \textbf{End of week} & Target \\ \hline
-Week 2               & Finish Project Description \\
-Week 3               & Begin collecting and reading literature \\
-Week 4               & Investigate simulation tools (reading ongoing) \\
-Week 5               & Investigate DHT networks (reading ongoing) \\
-Week 6               & Investigate blockchain storage and authentication (reading ongoing) \\
+Week 2               & Finished Project Description \\
+Week 3               & Begun collecting and reading literature \\
+Week 4               & Investigated simulation tools (reading ongoing) \\
+Week 5               & Investigated DHT networks (reading ongoing) \\
+Week 6               & Investigated blockchain storage and authentication (reading ongoing) \\
 Week 7               & Overspill week (and SoMaS reading week) \\
-Week 8               & General outline of Survey and Analysis report \\
+Week 8               & Finished a general outline of Survey and Analysis report \\
 Week 9               & Continued work on report \\
-Week 10              & Finish first draft of report \\
+Week 10              & Finished first draft of report \\
 Week 11              & Corrections and improvements to report, work plan for Semester 2 \\
   \end{tabular}
 \end{table}
