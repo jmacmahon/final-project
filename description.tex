@@ -46,6 +46,27 @@ The primary aims of the project are (in order of expected completion):
 % - citations
 
 \section{Analysis}
+% TODO expand preliminary paragraph here
+Some anticipated hurdles or problems to solve:
+
+\subsection{Blockchain storage}
+In Bitcoin, every peer has to store the entire blockchain (transaction history of the network) locally, and at the time of writing, this comes to almost 45 GiB.  Obviously this is very unwieldy and storing a blockchain of this size for each torrent would be totally infeasible (with current storage capacities).
+
+It is worth noting that since the architecture of our proposed system is slightly different to the Bitcoin network, this might not prove a problem anyway --- we will have many torrents with a smaller number of transactions each than the Bitcoin network, rather than one monolithic blockchain.  However in case the size does need to be reduced, some potential solutions would include summing and signing transactions older than time \mathbb{T} and discarding the detailed data,
+
+% TODO another potential solution?
+
+\subsection{Scaling}
+The nature of peer-to-peer systems requires their protocols to work at large scales.  It is not uncommmon for a BitTorrent swarm to contain upwards of 1000 peers, and ideally the protocols will scale upwards of that to be as future-proof as possible.
+
+Given that the development will largely be done on a single system, it will be necessary to perform rigorous testing with peer-to-peer simulation software.  An in-depth assessment of various simulation software will be part of the Survey and Analysis stage, however some preliminary options would be PeerSim or RealPeer.
+
+Some mathematical analysis using principles from concurrent computing and distributed systems would also complement the simulation testing.
+
+\subsubsection{Authentication}
+
+
+\subsubsection{Implementation}
 % - problems (blockchain, scale, implementation, authentication)
 % - techniques
 % - tools
@@ -53,5 +74,12 @@ The primary aims of the project are (in order of expected completion):
 \section{Plan of action}
 % - road map
 % - weekly plan
+
+\section{Citations}
+% - BitTorrent paper
+% - Bitcoin paper
+% - Blockchain size
+% - PeerSim
+% - RealPeer
 
 \end{document}
