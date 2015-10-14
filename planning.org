@@ -1,14 +1,48 @@
 * Reading
-
-** The BitTorrent Protocol Specification
+** Read in full
+*** The BitTorrent Protocol Specification
 Bram Cohen, 2008(?)
 
 Describes tracker behaviour in good detail: client IDs, bencoding
 
-** Kademlia: A Peer-to-peer Information System Based on the XOR Metric
+*** Kademlia: A Peer-to-peer Information System Based on the XOR Metric
 Petar Maymounkov and David Mazières, 2002
 
 Some implementation detail.  To be optimised -- some optimisations suggested
 but not in scope of paper.
 
 Very good example of style and level of detail in writing.
+
+** Read abstracts
+*** Formaleuros, Formalbitcoins, and Virtual Monies
+Formal analysis of what money is and how it works in localised environments.
+Interesting but probably irrelevant to the project.
+
+*** Questions related to Bitcoin and other Informational Money
+Follow-up of previous paper and Bitcoin and Beyond.  Collection of questions,
+some related to security, some less relevant.
+
+*** An Analysis of Anonymity in the Bitcoin System
+In the title.  Focus on network analysis -- could be useful for techniques to
+analyse other things.  We're not that interested in anonymity (in fact we don't
+want it).
+
+*** On Bitcoin and Red Balloons
+Incentivising broadcast of transactions in Bitcoin.  I suspect we won't need
+this (since cheating would happen by other means than not broadcasting?) but
+might be good to check.
+
+*** Analysis of Bitcoin Pooled Mining Reward Systems
+We won't be mining anything.
+
+*** Traveling the Silk Road: A measurement analysis of a large anonymous online marketplace
+Interesting but not related to the project.  Could be useful for ethical
+considerations.
+
+*** Homomorphic Payment Addresses and the Pay-to-Contract Protocol
+Proposal of a payment protocol over Bitcoin.  Definitely worth investigating,
+although requires (somehow) an asymmetric relationship between peers.
+
+*** Bitcoin and Beyond: Exclusively Informational Money
+Theoretical analysis of Bitcoin as informational money.  Possibly too technical
+for me to understand, also possibly not relevant to the project.
